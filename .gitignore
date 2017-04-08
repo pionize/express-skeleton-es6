@@ -3,6 +3,7 @@ build/
 docs/dist
 node_modules
 public/image/*
+!/public/image/.gitkeep
 
 .idea
 .vscode
