@@ -22,5 +22,6 @@ __MACOSX
 /cache/*
 !/cache/.gitkeep
 
-/config/local.json
-/config/*.local.json
+/config/local.js
+/config/*.local.js
+
