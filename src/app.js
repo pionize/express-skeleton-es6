@@ -14,6 +14,7 @@ import user from './modules/user';
 import product from './modules/product';
 import coupon from './modules/coupon';
 import order from './modules/order';
+import payment from './modules/payment';
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use(user.routes);
 app.use(product.routes);
 app.use(coupon.routes);
 app.use(order.routes);
+app.use(payment.routes);
 
 app.use((req, res, next) => {
   const err = new Error('Path Not Found');
