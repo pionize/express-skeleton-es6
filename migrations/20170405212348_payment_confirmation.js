@@ -11,7 +11,7 @@ exports.up = (knex, Promise) => Promise.all([
     t.string('merchant_bank').defaultTo('').notNullable();
     t.integer('amount').unsigned().defaultTo(0).notNullable();
     t.string('proof').defaultTo('').notNullable();
-    t.timestamps(true, true);
+    t.timestamps(true);
   }),
 ]);
 

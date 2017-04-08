@@ -9,7 +9,7 @@ exports.up = (knex, Promise) => Promise.all([
     t.integer('price').unsigned().notNullable().defaultTo(0);
     t.string('image').defaultTo('').notNullable();
     t.text('description').defaultTo('').notNullable();
-    t.timestamps(true, true);
+    t.timestamps(true);
   }),
 ]);
 

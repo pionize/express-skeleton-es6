@@ -12,7 +12,7 @@ exports.up = (knex, Promise) => Promise.all([
     t.integer('address_id').unsigned().references('address.address_id')
       .onDelete('SET NULL')
       .nullable();
-    t.timestamps(true, true);
+    t.timestamps(true);
   }),
 ]);
 

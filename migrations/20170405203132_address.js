@@ -7,7 +7,7 @@ exports.up = (knex, Promise) => Promise.all([
     t.string('email').defaultTo('').notNullable();
     t.string('address').defaultTo('').notNullable();
     t.string('phone').defaultTo('').notNullable();
-    t.timestamps(true, true);
+    t.timestamps(true);
   }),
 ]);
 

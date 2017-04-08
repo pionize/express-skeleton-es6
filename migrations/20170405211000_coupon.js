@@ -11,7 +11,7 @@ exports.up = (knex, Promise) => Promise.all([
     t.enu('status', ['active', 'inactive']).defaultTo('active').notNullable();
     t.timestamp('start_date').notNullable().defaultTo(knex.fn.now());
     t.timestamp('end_date').notNullable().defaultTo(knex.fn.now());
-    t.timestamps(true, true);
+    t.timestamps(true);
   }),
 ]);
 

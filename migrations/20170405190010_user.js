@@ -8,7 +8,7 @@ exports.up = (knex, Promise) => Promise.all([
     t.string('password').nullable().defaultTo(null);
     t.enu('status', ['active', 'inactive']).defaultTo('inactive').notNullable();
     t.enu('role', ['admin', 'user']).notNullable();
-    t.timestamps(true, true);
+    t.timestamps(true);
   }),
 ]);
 

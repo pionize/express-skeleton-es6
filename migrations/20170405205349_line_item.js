@@ -12,7 +12,7 @@ exports.up = (knex, Promise) => Promise.all([
     t.integer('order_id').unsigned().references('order.order_id')
       .onDelete('SET NULL')
       .nullable();
-    t.timestamps(true, true);
+    t.timestamps(true);
   }),
 ]);
 
