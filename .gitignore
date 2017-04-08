@@ -2,7 +2,7 @@ dist
 build/
 docs/dist
 node_modules
-public
+public/image
 
 .idea
 .vscode
