@@ -17,6 +17,8 @@ const rootDir = path.dirname(__dirname);
 def.publicPath = path.join(rootDir, 'public');
 def.cachePath = path.join(rootDir, 'cache');
 def.tempPath = path.join(rootDir, 'temp');
+def.logPath = path.join(rootDir, 'logs/log');
+def.imagePath = path.join(rootDir, 'public/image');
 
 def.cdnPath = 'http://cdn.localhost.com';
 

@@ -1,6 +1,8 @@
-import _ from 'lodash';
-import logger from 'morgan';
-import c from '../../constants';
+import moment from 'moment';
+import ch from 'chalk';
+import morgan from 'morgan';
+import winston from 'winston';
+import 'winston-daily-rotate-file';
 import config from '../../../config';
 
 /**
@@ -8,10 +10,27 @@ import config from '../../../config';
  * @param {Array} env
  * @return {function}
  */
-export function requestLoggerMiddleware(env) {
-  env = (env === undefined) ? [c.DEVELOPMENT, c.STAGING, c.PRODUCTION] : env;
-  env = Array.isArray(env) ? env : [env];
-  return _.includes(env, config.env) ? logger(config.logFormat) : (req, res, next) => next();
+export function requestLoggerMiddleware() {
+  const logger = new (winston.Logger)({
+    transports: [
+      new winston.transports.DailyRotateFile({
+        filename: config.logPath,
+        datePattern: 'yyyy-MM-dd.',
+        prepend: true,
+        level: 'debug',
+        timestamp: () => moment().format('YYYY-MM-DD HH:mm:ss'),
+        json: false,
+      }),
+    ],
+  });
+
+  logger.stream = {
+    write: (message) => {
+      logger.info(message);
+    },
+  };
+  morgan.token('body', req => `\n${JSON.stringify(req.body, null, 2)}`);
+  return morgan(`${ch.red(':method')} ${ch.green(':url')} ${ch.yellow(':response-time ms')} :body`, { stream: logger.stream });
 }
 
 /**
@@ -31,7 +50,7 @@ export function requestUtilsMiddleware() {
 
 // eslint-disable-next-line no-unused-vars
 export function apiResponse() {
-  return (req, res, next) => {
+  return (req, res) => {
     const { status, message, data } = req.resData;
     return res.json({
       status,
