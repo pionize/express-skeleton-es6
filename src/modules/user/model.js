@@ -1,10 +1,7 @@
 import bcrypt from 'bcrypt';
-import config from '../../../config';
-import core from '../../modules/core';
+import core from '../core';
 
-const bookshelf = core.mysql.connect(config.knex);
-
-bookshelf.plugin('pagination');
+const bookshelf = core.mysql.db;
 
 // used by bcrypt to generate new salt
 // 8 rounds will produce about 40 hashes per second on a 2GHz core
@@ -25,7 +22,6 @@ export const UserStatus = {
 export const Status = UserStatus;
 
 class UserModel extends bookshelf.Model {
-  // eslint-disable-next-line class-methods-use-this
   get tableName() {
     return 'user';
   }
