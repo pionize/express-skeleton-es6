@@ -31,7 +31,7 @@ class Comment {
 ```
 
 #### Configuration
-Base configuration file is located inside `/config` directory, the `index.js` will be overriden by the local configuration. Local configuration is excluded from the repository and depends on the `NODE_ENV` value. For example, in development environment, the local config file should be `development.jwt.js`.
+Base configuration file is located inside `/config` directory, the `index.js` will be overriden by the local configuration. Local configuration is excluded from the repository and depends on the `NODE_ENV` value. For example, in development environment, the local config file should be `development.js`.
 
 #### Migrations & Seed
 - To run the migration script, use `yarn knex migrate:latest`.
