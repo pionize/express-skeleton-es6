@@ -1,6 +1,5 @@
 import Promise from 'bluebird';
 import moment from 'moment';
-import bookshelf from 'bookshelf';
 import { Order, OrderStatus } from './model';
 import productModule from '../product';
 import lineItemModule from '../line_item';

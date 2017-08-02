@@ -64,19 +64,6 @@ app.use((req, res, next) => {
   next(err);
 });
 
-// eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-  const statusCode = err.code || 406;
-  res.status(statusCode);
-
-  const message = err.message;
-  delete err.message;
-  delete err.code;
-  res.json({
-    status: false,
-    message,
-    data: err,
-  });
-});
+app.use(core.middleware.apiErrorResponse());
 
 export default app;

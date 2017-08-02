@@ -51,11 +51,27 @@ export function requestUtilsMiddleware() {
 // eslint-disable-next-line no-unused-vars
 export function apiResponse() {
   return (req, res) => {
-    const { status, message, data } = req.resData;
+    const code = res.statusCode;
+    const { status = true, message = 'Success', data = {}, meta } = req.resData || {};
     return res.json({
+      code,
       status,
       message,
+      meta,
       data,
+    });
+  };
+}
+
+// eslint-disable-next-line no-unused-vars
+export function apiErrorResponse() {
+  return (err, req, res, next) => {
+    const { httpStatus, message, previousError } = err;
+    res.status(httpStatus || 406).json({
+      status: false,
+      code: httpStatus || 406,
+      message: message,
+      data: previousError || {},
     });
   };
 }

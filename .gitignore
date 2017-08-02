@@ -17,6 +17,9 @@ __MACOSX
 /coverage/*
 !/coverage/.gitkeep
 
+/logs/*
+!/logs/.gitkeep
+
 /temp/*
 !/temp/.gitkeep
 
