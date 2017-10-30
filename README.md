@@ -36,13 +36,13 @@ Base configuration file is located inside `/config` directory, the `index.js` wi
 #### Migrations & Seed
 - To create new migration script, use `node_modules/.bin/sequelize migration:generate --name {NAME}`
 - To run the migration script, `babel-node node_modules/.bin/sequelize db:migrate`
-  a. If you wish to undo most recent migration: `node_modules/.bin/sequelize db:migrate:undo`
-  b. If you wish to undo all migrations: `node_modules/.bin/sequelize db:migrate:undo:all`
-  b. If you wish to undo specific migration: `node_modules/.bin/sequelize db:migrate:undo:all --to {NAME}`
+  * If you wish to undo most recent migration: `node_modules/.bin/sequelize db:migrate:undo`
+  * If you wish to undo all migrations: `node_modules/.bin/sequelize db:migrate:undo:all`
+  * If you wish to undo specific migration: `node_modules/.bin/sequelize db:migrate:undo:all --to {NAME}`
 - To create new seed, use `node_modules/.bin/sequelize seed:generate --name {NAME}`
 - To runing the seeds, use `node_modules/.bin/sequelize db:seed:all`
-  a. If you wish to undo most recent seed: `node_modules/.bin/sequelize db:seed:undo`
-  b. If you wish to undo all seeds: `node_modules/.bin/sequelize db:seed:undo:all`
+  * If you wish to undo most recent seed: `node_modules/.bin/sequelize db:seed:undo`
+  * If you wish to undo all seeds: `node_modules/.bin/sequelize db:seed:undo:all`
 
 #### CLI Commands
 Here's list of commands you can use:
