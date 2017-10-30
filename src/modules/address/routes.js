@@ -12,7 +12,7 @@ const { jwtAuth } = user.middleware;
 
 routes.post('/address',
   jwtAuth(),
-  // validateCreate(),
+  validateCreate(),
   wrap(AddressController.create),
   apiResponse());
 
