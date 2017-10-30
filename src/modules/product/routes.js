@@ -7,11 +7,19 @@ const routes = express.Router();
 const { wrap } = core.utils;
 
 /**
- * GET /profile/:id*?
+ * GET /product/:id
  * View user profile
  */
-routes.get('/product/:id*?',
-  wrap(ProductController.getProduct),
+routes.get('/product/:id',
+  wrap(ProductController.getProductById),
+  apiResponse());
+
+/**
+ * GET /profile
+ * View user profile
+ */
+routes.get('/product',
+  wrap(ProductController.getAllProduct),
   apiResponse());
 
 export default routes;

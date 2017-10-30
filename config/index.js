@@ -12,6 +12,17 @@ def.https = false;
 def.host = 'localhost';
 def.port = 4000;
 
+// sequelize config
+def.sequelize = {};
+def.sequelize.debug = true;
+def.sequelize.username = 'root';
+def.sequelize.password = '';
+def.sequelize.database = '';
+def.sequelize.host = '127.0.0.1';
+def.sequelize.port = 3306;
+def.sequelize.dialect = 'mysql';
+
+
 // paths
 const rootDir = path.dirname(__dirname);
 def.publicPath = path.join(rootDir, 'public');

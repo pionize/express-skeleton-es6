@@ -1,12 +1,11 @@
 import express from 'express';
-import passport from 'passport';
-import { validateLogin } from './middleware';
+import { validateLogin, jwtAuth, loginAuth } from './middleware';
 import { UserController } from './controller';
 import core from '../core';
-import { apiResponse } from '../core/middleware';
 
 const routes = express.Router();
 const { wrap } = core.utils;
+const { apiResponse } = core.middleware;
 
 /**
  * POST /login
@@ -14,7 +13,7 @@ const { wrap } = core.utils;
  */
 routes.post('/user/login',
   validateLogin(),
-  passport.authenticate('local-login', {}),
+  loginAuth(),
   wrap(UserController.getUser),
   apiResponse());
 
@@ -23,7 +22,13 @@ routes.post('/user/login',
  * View user profile
  */
 routes.get('/user/:id*?',
-  passport.authenticate('jwt', {}),
+  jwtAuth(),
+  wrap(UserController.getUser),
+  apiResponse());
+
+routes.post('/user/login',
+  validateLogin(),
+  jwtAuth(),
   wrap(UserController.getUser),
   apiResponse());
 

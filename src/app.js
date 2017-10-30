@@ -4,7 +4,6 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
-import jsend from 'jsend';
 import statusMonitor from 'express-status-monitor';
 import responseTime from 'response-time';
 import config from '../config';
@@ -12,9 +11,7 @@ import c from './constants';
 import core from './modules/core';
 import user from './modules/user';
 import product from './modules/product';
-import coupon from './modules/coupon';
-import order from './modules/order';
-import payment from './modules/payment';
+import address from './modules/address';
 
 const app = express();
 
@@ -25,7 +22,6 @@ process.on('unhandledRejection', (err) => {
 
 app.use(statusMonitor());
 app.use(responseTime());
-app.use(jsend.middleware);
 app.use(cors());
 app.use(helmet());
 app.use(compression());
@@ -54,9 +50,7 @@ app.use(core.middleware.requestUtilsMiddleware());
 app.use(core.routes);
 app.use(user.routes);
 app.use(product.routes);
-app.use(coupon.routes);
-app.use(order.routes);
-app.use(payment.routes);
+app.use(address.routes);
 
 app.use((req, res, next) => {
   const err = new Error('Path Not Found');

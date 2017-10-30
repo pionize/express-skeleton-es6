@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import passport from 'passport';
 import validate from 'validate.js';
 import constraints from './validation';
 import utils from '../../../common/utils';
@@ -28,6 +29,34 @@ export function auth(roles, failedCb) {
     }
 
     return reject(req, res);
+  };
+}
+
+export function loginAuth() {
+  return (req, res, next) => {
+    passport.authenticate('local-login', (err, user) => {
+      if (err) return next(err);
+      if (!user) {
+        err = new Error('Unauthorized');
+        return next(err);
+      }
+      req.user = user;
+      return next();
+    })(req, res, next);
+  };
+}
+
+export function jwtAuth() {
+  return (req, res, next) => {
+    passport.authenticate('jwt', (err, user) => {
+      if (err) return next(err);
+      if (!user) {
+        err = new Error('Unauthorized');
+        return next(err);
+      }
+      req.user = user;
+      return next();
+    })(req, res, next);
   };
 }
 

@@ -10,6 +10,7 @@ export default { UserController };
  */
 UserController.getUser = async (req, res, next) => {
   let profile = req.user;
+  console.log('req user', req.user);
   if (req.params.id) {
     profile = await User.getById(req.params.id);
   }
@@ -18,10 +19,10 @@ UserController.getUser = async (req, res, next) => {
     const err = new Error('Invalid user');
     return next(err);
   }
+
   if (req.route.path === '/user/login') {
     const payload = { user_id: profile.user_id };
-    const token = jwt.sign(payload, jwtOptions.secretOrKey);
-    profile.token = token;
+    profile.token = jwt.sign(payload, jwtOptions.secretOrKey);
   }
   delete profile.password;
   req.resData = {
