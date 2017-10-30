@@ -46,6 +46,7 @@ app.set('case sensitive routing', true);
 // configure middleware
 app.use(core.middleware.requestLoggerMiddleware());
 app.use(core.middleware.requestUtilsMiddleware());
+app.use(core.middleware.apiResponse());
 
 app.use(core.routes);
 app.use(user.routes);

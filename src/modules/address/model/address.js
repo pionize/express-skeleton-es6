@@ -59,9 +59,9 @@ Address.belongsTo(User, { targetKey: 'user_id', foreignKey: 'user_id', as: 'user
  */
 Address.getAll = (condition = {}) => Address.findAll({
   where: condition,
-  include: [
-    { model: User, as: 'user' }, // load all pictures
-  ],
+  // include: [
+  //   { model: User, as: 'user' }, // load all pictures
+  // ],
 });
 
 // /**

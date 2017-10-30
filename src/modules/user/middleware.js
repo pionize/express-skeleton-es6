@@ -3,6 +3,7 @@ import passport from 'passport';
 import validate from 'validate.js';
 import constraints from './validation';
 import utils from '../../../common/utils';
+import { AuthorizationError } from '../../../common/errors';
 
 export const ROLE_ALL = '*';
 
@@ -51,7 +52,7 @@ export function jwtAuth() {
     passport.authenticate('jwt', (err, user) => {
       if (err) return next(err);
       if (!user) {
-        err = new Error('Unauthorized');
+        err = new AuthorizationError('Unauthorized');
         return next(err);
       }
       req.user = user;

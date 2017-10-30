@@ -6,19 +6,16 @@ import { AddressController } from './controller';
 
 const routes = express.Router();
 const { wrap } = core.utils;
-const { apiResponse } = core.middleware;
 const { jwtAuth } = user.middleware;
 
 
 routes.post('/address',
   jwtAuth(),
   validateCreate(),
-  wrap(AddressController.create),
-  apiResponse());
+  wrap(AddressController.create));
 
 routes.get('/address',
   jwtAuth(),
-  wrap(AddressController.getAll),
-  apiResponse());
+  wrap(AddressController.getAll));
 
 export default routes;

@@ -2,7 +2,7 @@ import { Address } from './model';
 
 export const AddressController = {};
 
-AddressController.create = async (req, res, next) => {
+AddressController.create = async (req, res) => {
   const user = req.user;
   const { name, email, address, phone } = req.body;
   const addressData = {
@@ -13,15 +13,10 @@ AddressController.create = async (req, res, next) => {
     user_id: user.user_id,
   };
   const data = await Address.create(addressData);
-  req.resData = {
-    status: true,
-    message: 'Address Data',
-    data,
-  };
-  next();
+  return res.API.success('Address', data);
 };
 
-AddressController.getAll = async (req, res, next) => {
+AddressController.getAll = async (req, res) => {
   const user = req.user;
   const data = await Address.getAll({ user_id: user.user_id });
 
@@ -30,12 +25,7 @@ AddressController.getAll = async (req, res, next) => {
   //   const x = await v.getUser();
   //   console.log('v', x);
   // });
-  req.resData = {
-    status: true,
-    message: 'Address Data',
-    data,
-  };
-  next();
+  return res.API.success('Address List', data);
 };
 
 export default { AddressController };

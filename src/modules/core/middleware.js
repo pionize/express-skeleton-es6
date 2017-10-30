@@ -50,29 +50,34 @@ export function requestUtilsMiddleware() {
 
 // eslint-disable-next-line no-unused-vars
 export function apiResponse() {
-  return (req, res) => {
-    const code = res.statusCode;
-    const { status = true, message = 'Success', data = {}, meta } = req.resData || {};
-    return res.json({
+  return (req, res, next) => {
+    const response = {};
+    response.meta = {};
+
+    const defaultResponse = (code, status, message, data, meta) => ({
       code,
       status,
       message,
       meta,
       data,
     });
+
+    response.success = (message, data) =>
+      res.status(200).json(defaultResponse(200, true, message, data, response.meta));
+
+    response.error = (message, data, code) =>
+      res.status(code).json(defaultResponse(code, false, message, data, response.meta));
+
+    res.API = response;
+    next();
   };
 }
 
-// eslint-disable-next-line no-unused-vars
 export function apiErrorResponse() {
+  // eslint-disable-next-line no-unused-vars
   return (err, req, res, next) => {
-    const { httpStatus, message, previousError } = err;
-    res.status(httpStatus || 406).json({
-      status: false,
-      code: httpStatus || 406,
-      message: message,
-      data: previousError || {},
-    });
+    const { httpStatus = 406, message, previousError = {} } = err;
+    return res.API.error(message, previousError, httpStatus);
   };
 }
 
