@@ -14,7 +14,7 @@ def.port = 4000;
 
 // sequelize config
 def.sequelize = {};
-def.sequelize.debug = true;
+def.sequelize.debug = console.log;
 def.sequelize.username = 'root';
 def.sequelize.password = '';
 def.sequelize.database = '';
