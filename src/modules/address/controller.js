@@ -24,6 +24,12 @@ AddressController.create = async (req, res, next) => {
 AddressController.getAll = async (req, res, next) => {
   const user = req.user;
   const data = await Address.getAll({ user_id: user.user_id });
+
+  // magic!!
+  // data.map(async (v) => {
+  //   const x = await v.getUser();
+  //   console.log('v', x);
+  // });
   req.resData = {
     status: true,
     message: 'Address Data',
