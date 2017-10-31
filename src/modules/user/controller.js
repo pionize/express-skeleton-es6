@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { User } from './model';
 import { jwt as jwtOptions } from '../../../config';
+import { getUserError } from './messages';
 
 export const UserController = {};
 export default { UserController };
@@ -11,12 +12,12 @@ export default { UserController };
 UserController.getUser = async (req, res, next) => {
   let profile = req.user;
   if (req.params.id) {
-    profile = await User.getById(req.params.id);
+    profile = await User.findById(req.params.id);
   }
 
+
   if (!profile) {
-    const err = new Error('Invalid user');
-    return next(err);
+    return next(getUserError('user', 'not_found'));
   }
 
   if (req.route.path === '/users/login') {
