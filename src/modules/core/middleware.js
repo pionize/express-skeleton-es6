@@ -28,7 +28,7 @@ export function requestLoggerMiddleware() {
       logger.info(message);
     },
   };
-  morgan.token('body', req => `\n${JSON.stringify(req.body, null, 2)}`);
+  morgan.token('body', (req, res) => `\nrequest header: ${JSON.stringify(req.headers, null, 2)}\nrequest body: ${JSON.stringify(req.body, null, 2)}\nresponse body: ${JSON.stringify(res.APIResponse, null, 2)}`);
   return morgan(`${ch.red(':method')} ${ch.green(':url')} ${ch.yellow(':response-time ms')} :body`, { stream: logger.stream });
 }
 
@@ -53,13 +53,17 @@ export function apiResponse() {
     const response = {};
     response.meta = {};
 
-    const defaultResponse = (code, status, message, data, meta) => ({
-      code,
-      status,
-      message,
-      meta,
-      data,
-    });
+    const defaultResponse = (code, status, message, data, meta) => {
+      const output = {
+        code,
+        status,
+        message,
+        meta,
+        data,
+      };
+      res.APIResponse = output;
+      return output;
+    };
 
     /**
      * Add API success responder
