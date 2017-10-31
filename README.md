@@ -47,8 +47,9 @@ Here's list of commands you can use:
 - `yarn run start` run app server
 
 CHANGELOG
-- Add res.API.error and res.API.success as API responder
+- Add `res.API.error()` and `res.API.success()` as API responder
 - Update error response if JWT is unauthorized, use the same error response
 - All model import could be directly import
 - Migrate to sequelize
 - Add newrelic and sentry to skeleton
+- Add request headers and response body to log
