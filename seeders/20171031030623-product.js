@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface) => {
-      return queryInterface.bulkInsert('Product', [
+      return queryInterface.bulkInsert('products', [
         { product_id: 1, name: 'Apple iPhone 7', status: 'active', quantity: 10, price: 12000000, image: 'http://cdn2.gsmarena.com/vv/pics/apple/apple-iphone-7-3.jpg', description: '' },
         { product_id: 2, name: 'Samsung Galaxy S8', status: 'active', quantity: 0, price: 11000000, image: 'https://img.us.news.samsung.com/us/wp-content/uploads/2017/03/29150006/S8Plus_S8_Silver_LockUp_rgb.jpg', description: '' },
         { product_id: 3, name: 'MacBook Pro 2016', status: 'active', quantity: 2, price: 16000000, image: 'https://store.storeimages.cdn-apple.com/4974/as-images.apple.com/is/image/AppleInc/aos/published/images/m/bp/mbp13touch/silver/mbp13touch-silver-select-201610', description: '' },
@@ -10,6 +10,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Product', null, {});
+    return queryInterface.bulkDelete('products', null, {});
   },
 };

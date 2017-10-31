@@ -4,7 +4,7 @@ const { User } = user.model;
 
 module.exports = {
   up: (queryInterface) => {
-    return queryInterface.bulkInsert('User', [{
+    return queryInterface.bulkInsert('users', [{
       user_id: 1,
       name: 'admin',
       email: 'andrew@pionize.com',
@@ -22,6 +22,6 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-    return queryInterface.bulkDelete('User', null, {});
+    return queryInterface.bulkDelete('users', null, {});
   }
 };
