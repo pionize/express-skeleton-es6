@@ -23,18 +23,18 @@ class Comment {
 ```
 
 #### Configuration
-Base configuration file is located inside `/config` directory, the `index.js` will be overriden by the local configuration. Local configuration is excluded from the repository and depends on the `NODE_ENV` value. For example, in development environment, the local config file should be `development.js`.
+Base configuration file is located inside `/config` directory, the `index.js` will be overridden by the local configuration. Local configuration is excluded from the repository and depends on the `NODE_ENV` value. For example, in development environment, the local config file should be `development.js`.
 
 #### Migrations & Seed
-- To create new migration script, use `node_modules/.bin/sequelize migration:generate --name {NAME}`
-- To run the migration script, `babel-node node_modules/.bin/sequelize db:migrate`
-  * If you wish to undo most recent migration: `node_modules/.bin/sequelize db:migrate:undo`
-  * If you wish to undo all migrations: `node_modules/.bin/sequelize db:migrate:undo:all`
-  * If you wish to undo specific migration: `node_modules/.bin/sequelize db:migrate:undo:all --to {NAME}`
-- To create new seed, use `node_modules/.bin/sequelize seed:generate --name {NAME}`
-- To runing the seeds, use `node_modules/.bin/sequelize db:seed:all`
-  * If you wish to undo most recent seed: `node_modules/.bin/sequelize db:seed:undo`
-  * If you wish to undo all seeds: `node_modules/.bin/sequelize db:seed:undo:all`
+- To create new migration script, use `yarn sequelize migration:generate -- --name {NAME}`
+- To run the migration script, `babel-node yarn sequelize db:migrate`
+  * If you wish to undo most recent migration: `yarn sequelize db:migrate:undo`
+  * If you wish to undo all migrations: `yarn sequelize db:migrate:undo:all`
+  * If you wish to undo specific migration: `yarn sequelize db:migrate:undo:all -- --to {NAME}`
+- To create new seed, use `yarn sequelize seed:generate -- --name {NAME}`
+- To runing the seeds, use `yarn sequelize db:seed:all`
+  * If you wish to undo most recent seed: `yarn sequelize db:seed:undo`
+  * If you wish to undo all seeds: `yarn sequelize db:seed:undo:all`
 
 #### CLI Commands
 Here's list of commands you can use:
@@ -51,3 +51,4 @@ CHANGELOG
 - Update error response if JWT is unauthorized, use the same error response
 - All model import could be directly import
 - Migrate to sequelize
+- Add newrelic and sentry to skeleton
