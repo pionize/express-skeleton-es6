@@ -53,3 +53,4 @@ CHANGELOG
 - Migrate to sequelize
 - Add newrelic and sentry to skeleton
 - Add request headers and response body to log
+- Implement messages dictionary, please look at user module
