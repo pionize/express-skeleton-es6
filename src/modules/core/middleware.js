@@ -7,7 +7,6 @@ import config from '../../../config';
 
 /**
  * Request logger middleware
- * @param {Array} env
  * @return {function}
  */
 export function requestLoggerMiddleware() {
@@ -62,11 +61,23 @@ export function apiResponse() {
       data,
     });
 
+    /**
+     * Add API success responder
+     * @param {string} message
+     * @param {object} data, returned data
+     */
     response.success = (message, data) =>
       res.status(200).json(defaultResponse(200, true, message, data, response.meta));
 
-    response.error = (message, data, code) =>
-      res.status(code).json(defaultResponse(code, false, message, data, response.meta));
+    /**
+     * Add API error responder
+     * @param {object} error, error object data
+     */
+    response.error = (error) => {
+      const { httpStatus = 406, message, previousError = {} } = error;
+      return res.status(httpStatus)
+        .json(defaultResponse(httpStatus, false, message, previousError, response.meta));
+    };
 
     res.API = response;
     next();
@@ -75,9 +86,5 @@ export function apiResponse() {
 
 export function apiErrorResponse() {
   // eslint-disable-next-line no-unused-vars
-  return (err, req, res, next) => {
-    const { httpStatus = 406, message, previousError = {} } = err;
-    return res.API.error(message, previousError, httpStatus);
-  };
+  return (err, req, res, next) => res.API.error(err);
 }
-
