@@ -53,6 +53,17 @@ def.jwt.audience = 'pionize.com';
 // mailer config
 def.emailServiceAdapter = 'sendgrid';
 
+// sentry config
+def.sentry = {};
+def.sentry.enable = false;
+def.sentry.dsn = '';
+
+// newrelic config
+def.newrelic = {};
+def.newrelic.enable = false;
+def.newrelic.key = '';
+def.newrelic.name = 'Project';
+
 // url builder
 def.url = (dir = '/') => {
   const port = ((def.https && def.port !== 443) || (!def.https && def.port !== 80)) ? `:${def.port}` : '';
