@@ -48,8 +48,8 @@ Here's list of commands you can use:
 
 CHANGELOG
 - Add `res.API.error()` and `res.API.success()` as API responder
-- Update error response if JWT is unauthorized, use the same error response
-- All model import could be directly import
+- Update error response if JWT is unauthorized, use the same error response as others
+- All model import could be directly imported
 - Migrate to sequelize
 - Add newrelic and sentry to skeleton
 - Add request headers and response body to log
