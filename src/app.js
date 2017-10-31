@@ -6,6 +6,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import statusMonitor from 'express-status-monitor';
 import responseTime from 'response-time';
+import Raven from 'raven';
 import config from '../config';
 import c from './constants';
 import core from './modules/core';
@@ -19,6 +20,11 @@ process.on('unhandledRejection', (err) => {
   // eslint-disable-next-line no-console
   console.log('Unhandled Rejection:', err.stack);
 });
+
+const sentry = config.sentry.enable;
+if (sentry) {
+  Raven.config(config.sentry.dsn).install();
+}
 
 app.use(statusMonitor());
 app.use(responseTime());
@@ -48,10 +54,17 @@ app.use(core.middleware.requestLoggerMiddleware());
 app.use(core.middleware.requestUtilsMiddleware());
 app.use(core.middleware.apiResponse());
 
+// should be the first item before registering any routes
+// see: https://docs.sentry.io/clients/node/integrations/express/
+if (sentry) app.use(Raven.requestHandler());
+
 app.use(core.routes);
 app.use(user.routes);
 app.use(product.routes);
 app.use(address.routes);
+
+// should be coming first before any other error handler
+if (sentry) app.use(Raven.errorHandler());
 
 app.use((req, res, next) => {
   const err = new Error('Path Not Found');
