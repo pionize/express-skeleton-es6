@@ -9,13 +9,20 @@ const { wrap } = core.utils;
 const { jwtAuth } = user.middleware;
 
 
-routes.post('/address',
+routes.post('/addresses',
   jwtAuth(),
   validateCreate(),
   wrap(AddressController.create));
 
-routes.get('/address',
+routes.get('/addresses',
   jwtAuth(),
   wrap(AddressController.getAll));
+
+/**
+ * GET /addresses/:id
+ * View user profile
+ */
+routes.get('/addresses/:id',
+  wrap(AddressController.getById));
 
 export default routes;
