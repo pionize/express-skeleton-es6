@@ -10,7 +10,6 @@ export default { UserController };
  */
 UserController.getUser = async (req, res, next) => {
   let profile = req.user;
-  console.log('req user', req.user);
   if (req.params.id) {
     profile = await User.getById(req.params.id);
   }
@@ -25,10 +24,5 @@ UserController.getUser = async (req, res, next) => {
     profile.token = jwt.sign(payload, jwtOptions.secretOrKey);
   }
   delete profile.password;
-  req.resData = {
-    status: true,
-    message: 'User Data',
-    data: profile,
-  };
-  return next();
+  return res.API.success('User Data', profile);
 };
