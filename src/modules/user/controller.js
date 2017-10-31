@@ -19,7 +19,7 @@ UserController.getUser = async (req, res, next) => {
     return next(err);
   }
 
-  if (req.route.path === '/user/login') {
+  if (req.route.path === '/users/login') {
     const payload = { user_id: profile.user_id };
     profile.token = jwt.sign(payload, jwtOptions.secretOrKey);
   }
