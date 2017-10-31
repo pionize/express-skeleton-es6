@@ -7,14 +7,6 @@ Each module will be placed under `src/modules` directory. As a rule of thumb, sp
 Example:
 
 ```js
-// src/modules/users/product.js
-export class Person {
-  static id: Int;
-  static name: String;
-}
-```
-
-```js
 // src/modules/users/index.js
 import * as model from './model';
 export model;
@@ -53,3 +45,9 @@ Here's list of commands you can use:
 - `yarn run build` transpile all js files under `src` directory into `build` folder
 - `yarn run build:watch` build with watcher enabled
 - `yarn run start` run app server
+
+CHANGELOG
+- Add res.API.error and res.API.success as API responder
+- Update error response if JWT is unauthorized, use the same error response
+- All model import could be directly import
+- Migrate to sequelize
