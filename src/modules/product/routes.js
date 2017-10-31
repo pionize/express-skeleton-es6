@@ -11,15 +11,13 @@ const { wrap } = core.utils;
  * View user profile
  */
 routes.get('/product/:id',
-  wrap(ProductController.getProductById),
-  apiResponse());
+  wrap(ProductController.getProductById));
 
 /**
  * GET /profile
  * View user profile
  */
 routes.get('/product',
-  wrap(ProductController.getAllProduct),
-  apiResponse());
+  wrap(ProductController.getAllProduct));
 
 export default routes;

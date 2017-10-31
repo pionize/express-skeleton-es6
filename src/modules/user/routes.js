@@ -14,8 +14,7 @@ const { apiResponse } = core.middleware;
 routes.post('/user/login',
   validateLogin(),
   loginAuth(),
-  wrap(UserController.getUser),
-  apiResponse());
+  wrap(UserController.getUser));
 
 /**
  * GET /profile/:id*?
@@ -23,13 +22,11 @@ routes.post('/user/login',
  */
 routes.get('/user/:id*?',
   jwtAuth(),
-  wrap(UserController.getUser),
-  apiResponse());
+  wrap(UserController.getUser));
 
 routes.post('/user/login',
   validateLogin(),
   jwtAuth(),
-  wrap(UserController.getUser),
-  apiResponse());
+  wrap(UserController.getUser));
 
 export default routes;
