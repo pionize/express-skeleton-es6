@@ -8,7 +8,7 @@ export const ProductStatus = {
   ACTIVE: 'active',
 };
 
-export const Product = sequelize.define('Product', {
+export const Product = sequelize.define('product', {
   product_id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
@@ -40,11 +40,18 @@ export const Product = sequelize.define('Product', {
     type: DataTypes.TEXT,
     defaultValue: '',
   },
+  created_at: {
+    type: DataTypes.DATE(),
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP()'),
+  },
+  updated_at: {
+    type: DataTypes.DATE(),
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()'),
+  },
 }, {
+  underscored: true,
   timestamps: true,
-  updatedAt: 'updated_at',
-  createdAt: 'created_at',
-  tableName: 'product', // default to plural, so we need to define
+  // tableName: 'product', // default to plural, so we need to define
 });
 
 // implements class level method

@@ -23,7 +23,7 @@ export const UserStatus = {
 
 export const Status = UserStatus;
 
-export const User = sequelize.define('User', {
+export const User = sequelize.define('user', {
   user_id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
@@ -57,14 +57,17 @@ export const User = sequelize.define('User', {
     allowNull: false,
   },
   created_at: {
-    type: DataTypes.DATE,
-    defaultValue: sequelize.literal('NOW()'),
+    type: DataTypes.DATE(),
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP()'),
+  },
+  updated_at: {
+    type: DataTypes.DATE(),
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()'),
   },
 }, {
   timestamps: true,
-  updatedAt: 'updated_at',
-  createdAt: 'created_at',
-  tableName: 'user', // default to plural, so we need to define
+  underscored: true,
+  // tableName: 'user', // default to plural, so we need to define
 });
 
 /**

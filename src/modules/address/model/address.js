@@ -5,7 +5,7 @@ import user from '../../user';
 const sequelize = core.sequelize.db;
 const { User } = user.model;
 
-export const Address = sequelize.define('Address', {
+export const Address = sequelize.define('address', {
   address_id: {
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
@@ -34,12 +34,18 @@ export const Address = sequelize.define('Address', {
   user_id: {
     type: DataTypes.INTEGER.UNSIGNED,
   },
+  created_at: {
+    type: DataTypes.DATE(),
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP()'),
+  },
+  updated_at: {
+    type: DataTypes.DATE(),
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()'),
+  },
 }, {
   underscored: true,
   timestamps: true,
-  updatedAt: 'updated_at',
-  createdAt: 'created_at',
-  tableName: 'address', // default to plural, so we need to define
+  // tableName: 'address', // default to plural, so we need to define
 });
 
 // eslint-disable-next-line
