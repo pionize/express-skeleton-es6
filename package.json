@@ -40,6 +40,7 @@
     "response-time": "^2.3.2",
     "sequelize": "^4.17.2",
     "sequelize-cli": "^3.0.0",
+    "sharp": "^0.18.4",
     "uuid": "^3.0.1",
     "validate.js": "^0.11.1",
     "winston": "^2.3.1",
