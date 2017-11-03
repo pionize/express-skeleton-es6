@@ -27,7 +27,7 @@ Base configuration file is located inside `/config` directory, the `index.js` wi
 
 #### Migrations & Seed
 - To create new migration script, use `yarn sequelize migration:generate -- --name {NAME}`
-- To run the migration script, `babel-node yarn sequelize db:migrate`
+- To run the migration script, `yarn sequelize db:migrate`
   * If you wish to undo most recent migration: `yarn sequelize db:migrate:undo`
   * If you wish to undo all migrations: `yarn sequelize db:migrate:undo:all`
   * If you wish to undo specific migration: `yarn sequelize db:migrate:undo:all -- --to {NAME}`
