@@ -50,6 +50,10 @@ def.jwt.secretOrKey = 'MY-APP';
 def.jwt.issuer = 'pionize.com';
 def.jwt.audience = 'pionize.com';
 
+// crypto config
+def.crypto = {};
+def.crypto.secret = 'MY-APP';
+
 // mailer config
 def.emailServiceAdapter = 'sendgrid';
 
@@ -69,6 +73,12 @@ def.url = (dir = '/') => {
   const port = ((def.https && def.port !== 443) || (!def.https && def.port !== 80)) ? `:${def.port}` : '';
   return `http${def.https ? 's' : ''}://${def.host}${port}${dir}`;
 };
+
+// sendgrid config
+def.sendgrid = {};
+def.sendgrid.fromEmail = 'noreply@example.com';
+def.sendgrid.apiKey = '';
+def.sendgrid.params = {};
 
 cfg.resolveLocalConfig(__dirname, (err, file) => {
   // eslint-disable-next-line global-require, import/no-dynamic-require
