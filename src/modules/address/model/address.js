@@ -40,7 +40,7 @@ export const Address = sequelize.define('address', {
   },
   updated_at: {
     type: DataTypes.DATE(),
-    defaultValue: sequelize.literal('CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP()'),
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP()'),
   },
 }, {
   underscored: true,

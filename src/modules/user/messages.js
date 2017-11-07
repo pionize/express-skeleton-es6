@@ -20,7 +20,11 @@ export const errMsg = {
     title: 'Get user gagal',
     not_found: 'User tidak terdaftar',
   },
+  authorized: {
+    unauthorized: 'Unauthorized',
+  },
 };
 
 export const loginError = formatError.bind(errMsg.loginMsg);
 export const getUserError = formatError.bind(errMsg.getUserMsg);
+export const authorizedError = formatError.bind(errMsg.authorized);

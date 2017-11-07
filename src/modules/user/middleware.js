@@ -3,6 +3,7 @@ import passport from 'passport';
 import validate from 'validate.js';
 import constraints from './validation';
 import utils from '../../../common/utils';
+import { loginError } from './messages';
 import { AuthorizationError } from '../../../common/errors';
 
 export const ROLE_ALL = '*';
@@ -38,7 +39,7 @@ export function loginAuth() {
     passport.authenticate('local-login', (err, user) => {
       if (err) return next(err);
       if (!user) {
-        err = new Error('Unauthorized');
+        err = loginError('user', 'wrong_password');
         return next(err);
       }
       req.user = user;

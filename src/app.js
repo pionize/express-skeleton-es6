@@ -13,6 +13,7 @@ import core from './modules/core';
 import user from './modules/user';
 import product from './modules/product';
 import address from './modules/address';
+import order from './modules/order';
 
 const app = express();
 
@@ -62,6 +63,7 @@ app.use(core.routes);
 app.use(user.routes);
 app.use(product.routes);
 app.use(address.routes);
+app.use(order.routes);
 
 // should be coming first before any other error handler
 if (sentry) app.use(Raven.errorHandler());
