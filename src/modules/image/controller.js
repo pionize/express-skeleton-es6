@@ -8,7 +8,7 @@ import { uploadError } from './messages';
 export const ImageController = {};
 export default { ImageController };
 
-ImageController.upload = async (req, res, next) => {
+ImageController.upload = async (req, res) => {
   const images = req.body.images;
   const names = [];
   const promises = _.map(images, (image) => {
@@ -41,6 +41,5 @@ ImageController.upload = async (req, res, next) => {
   });
 
   const data = req.type === 'image' ? { images: names } : { videos: names };
-  req.resData = { data };
-  return next();
+  return res.API.success('Upload success', data);
 };

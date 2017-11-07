@@ -6,10 +6,6 @@ constraints.upload = {
   },
   type: {
     presence: true,
-    inclusion: {
-      within: ['activity', 'profile', 'cover', 'group', 'story'],
-      message: 'accept only `activity` or `profile` value',
-    },
   },
 };
 
