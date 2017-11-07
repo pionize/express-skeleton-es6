@@ -55,3 +55,4 @@ CHANGELOG
 - Add request headers and response body to log
 - Implement messages dictionary, please look at user module
 - Add image module example
+- Add mailer module example and implementation at user module
