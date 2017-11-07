@@ -53,6 +53,8 @@ CHANGELOG
 - Migrate to sequelize
 - Add newrelic and sentry to skeleton
 - Add request headers and response body to log
-- Implement messages dictionary, please look at user module
-- Add image module example
-- Add mailer module example and implementation at user module
+- Implement messages dictionary, please look in user module
+- Add `image` module example
+- Add `mailer` module example and implementation at user module
+- Add `order` and `line items` module example
+- Add `validation.async()` example, please look the example in order module
