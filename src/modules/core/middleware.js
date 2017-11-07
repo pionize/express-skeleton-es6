@@ -51,7 +51,7 @@ export function requestUtilsMiddleware() {
 export function apiResponse() {
   return (req, res, next) => {
     const response = {};
-    response.meta = {};
+    // response.meta = {};
 
     const defaultResponse = (code, status, message, data, meta) => {
       const output = {
@@ -69,9 +69,10 @@ export function apiResponse() {
      * Add API success responder
      * @param {string} message
      * @param {object} data, returned data
+     * @param {object} meta, meta data
      */
-    response.success = (message, data) =>
-      res.status(200).json(defaultResponse(200, true, message, data, response.meta));
+    response.success = (message, data = {}, meta = {}) =>
+      res.status(200).json(defaultResponse(200, true, message, data, meta));
 
     /**
      * Add API error responder
@@ -80,7 +81,7 @@ export function apiResponse() {
     response.error = (error) => {
       const { httpStatus = 406, message, previousError = {} } = error;
       return res.status(httpStatus)
-        .json(defaultResponse(httpStatus, false, message, previousError, response.meta));
+        .json(defaultResponse(httpStatus, false, message, previousError, {}));
     };
 
     res.API = response;
