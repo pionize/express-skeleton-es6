@@ -38,7 +38,6 @@ export const Product = sequelize.define('product', {
   },
   description: {
     type: DataTypes.TEXT,
-    defaultValue: '',
   },
   created_at: {
     type: DataTypes.DATE(),
