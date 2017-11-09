@@ -79,7 +79,7 @@ export function apiResponse() {
      * @param {object} error, error object data
      */
     response.error = (error) => {
-      const { httpStatus = 406, message, previousError = {} } = error;
+      const { httpStatus = 406, message = 'Error', previousError = error } = error;
       return res.status(httpStatus)
         .json(defaultResponse(httpStatus, false, message, previousError, {}));
     };

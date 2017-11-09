@@ -4,7 +4,7 @@ import validate from 'validate.js';
 import constraints from './validation';
 import utils from '../../../common/utils';
 import { loginError } from './messages';
-import { AuthorizationError } from '../../../common/errors';
+import { AuthorizationError, BadRequestError } from '../../../common/errors';
 
 export const ROLE_ALL = '*';
 
@@ -16,7 +16,7 @@ export const ROLE_ALL = '*';
 export function auth(roles, failedCb) {
   const reject = (req, res, next) => {
     if (utils.isFunction(failedCb)) return failedCb(req, res);
-    const err = new Error('Access denied.');
+    const err = new AuthorizationError('Access denied.');
     return next(err);
   };
 
@@ -69,7 +69,7 @@ export function validateLogin() {
   return (req, res, next) => {
     const hasError = validate(req.body, constraints.login);
     if (hasError) {
-      next(hasError);
+      next(new BadRequestError('Login failed', hasError));
     }
     return next();
   };
