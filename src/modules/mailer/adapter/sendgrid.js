@@ -8,11 +8,11 @@ export class Sendgrid {
       throw new Error('Invalid options passed to Sendgrid');
     }
 
-    if (!options.apiKey) {
+    if (options.apiKey === undefined) {
       throw new Error('Sengrid API key not present, please set the `config.sendgrid.apiKey` in your setting file');
     }
 
-    if (!options.fromEmail) {
+    if (options.fromEmail === undefined) {
       throw new Error('Sengrid sender address not present, please set the `config.sendgrid.fromEmail` in your setting file');
     }
 
