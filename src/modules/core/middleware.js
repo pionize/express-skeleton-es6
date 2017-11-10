@@ -80,6 +80,8 @@ export function apiResponse() {
      */
     response.error = (error) => {
       const { httpStatus = 406, message = 'Error', previousError = error } = error;
+      delete previousError.httpStatus;
+      delete previousError.message;
       return res.status(httpStatus)
         .json(defaultResponse(httpStatus, false, message, previousError, {}));
     };
