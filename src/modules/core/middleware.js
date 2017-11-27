@@ -7,7 +7,6 @@ import config from '../../../config';
 
 /**
  * Request logger middleware
- * @param {Array} env
  * @return {function}
  */
 export function requestLoggerMiddleware() {
@@ -29,7 +28,7 @@ export function requestLoggerMiddleware() {
       logger.info(message);
     },
   };
-  morgan.token('body', req => `\n${JSON.stringify(req.body, null, 2)}`);
+  morgan.token('body', (req, res) => `\nrequest header: ${JSON.stringify(req.headers, null, 2)}\nrequest body: ${JSON.stringify(req.body, null, 2)}\nresponse body: ${JSON.stringify(res.APIResponse, null, 2)}`);
   return morgan(`${ch.red(':method')} ${ch.green(':url')} ${ch.yellow(':response-time ms')} :body`, { stream: logger.stream });
 }
 
@@ -50,29 +49,49 @@ export function requestUtilsMiddleware() {
 
 // eslint-disable-next-line no-unused-vars
 export function apiResponse() {
-  return (req, res) => {
-    const code = res.statusCode;
-    const { status = true, message = 'Success', data = {}, meta } = req.resData || {};
-    return res.json({
-      code,
-      status,
-      message,
-      meta,
-      data,
-    });
+  return (req, res, next) => {
+    const response = {};
+    // response.meta = {};
+
+    const defaultResponse = (code, status, message, data, meta) => {
+      const output = {
+        code,
+        status,
+        message,
+        meta,
+        data,
+      };
+      res.APIResponse = output;
+      return output;
+    };
+
+    /**
+     * Add API success responder
+     * @param {string} message
+     * @param {object} data, returned data
+     * @param {object} meta, meta data
+     */
+    response.success = (message, data = {}, meta = {}) =>
+      res.status(200).json(defaultResponse(200, true, message, data, meta));
+
+    /**
+     * Add API error responder
+     * @param {object} error, error object data
+     */
+    response.error = (error) => {
+      const { httpStatus = 406, message = 'Error', previousError = error } = error;
+      delete previousError.httpStatus;
+      delete previousError.message;
+      return res.status(httpStatus)
+        .json(defaultResponse(httpStatus, false, message, previousError, {}));
+    };
+
+    res.API = response;
+    next();
   };
 }
 
-// eslint-disable-next-line no-unused-vars
 export function apiErrorResponse() {
-  return (err, req, res, next) => {
-    const { httpStatus, message, previousError } = err;
-    res.status(httpStatus || 406).json({
-      status: false,
-      code: httpStatus || 406,
-      message: message,
-      data: previousError || {},
-    });
-  };
+  // eslint-disable-next-line no-unused-vars
+  return (err, req, res, next) => res.API.error(err);
 }
-

@@ -13,6 +13,7 @@ __MACOSX
 *.local.json
 *.jwt.js
 *.local.yml
+yarn.lock
 
 /coverage/*
 !/coverage/.gitkeep

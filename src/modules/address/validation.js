@@ -1,19 +1,37 @@
 const constraints = {};
 
 /**
- * Create order
+ * Create
  */
-constraints.createOrder = {
-  products: {
+constraints.create = {
+  name: {
+    presence: true,
+  },
+  email: {
+    presence: true,
+  },
+  address: {
+    presence: true,
+  },
+  phone: {
     presence: true,
   },
 };
 
 /**
- * Apply coupon
+ * Update
  */
-constraints.applyCoupon = {
-  coupon_code: {
+constraints.update = {
+  name: {
+    presence: true,
+  },
+  email: {
+    presence: true,
+  },
+  address: {
+    presence: true,
+  },
+  phone: {
     presence: true,
   },
 };

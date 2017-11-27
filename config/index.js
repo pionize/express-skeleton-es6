@@ -12,6 +12,17 @@ def.https = false;
 def.host = 'localhost';
 def.port = 4000;
 
+// sequelize config
+def.sequelize = {};
+def.sequelize.debug = console.log;
+def.sequelize.username = 'root';
+def.sequelize.password = '';
+def.sequelize.database = '';
+def.sequelize.host = '127.0.0.1';
+def.sequelize.port = 3306;
+def.sequelize.dialect = 'mysql';
+
+
 // paths
 const rootDir = path.dirname(__dirname);
 def.publicPath = path.join(rootDir, 'public');
@@ -39,14 +50,35 @@ def.jwt.secretOrKey = 'MY-APP';
 def.jwt.issuer = 'pionize.com';
 def.jwt.audience = 'pionize.com';
 
+// crypto config
+def.crypto = {};
+def.crypto.secret = 'MY-APP';
+
 // mailer config
 def.emailServiceAdapter = 'sendgrid';
+
+// sentry config
+def.sentry = {};
+def.sentry.enable = false;
+def.sentry.dsn = '';
+
+// newrelic config
+def.newrelic = {};
+def.newrelic.enable = false;
+def.newrelic.key = '';
+def.newrelic.name = 'Project';
 
 // url builder
 def.url = (dir = '/') => {
   const port = ((def.https && def.port !== 443) || (!def.https && def.port !== 80)) ? `:${def.port}` : '';
   return `http${def.https ? 's' : ''}://${def.host}${port}${dir}`;
 };
+
+// sendgrid config
+def.sendgrid = {};
+def.sendgrid.fromEmail = 'noreply@example.com';
+def.sendgrid.apiKey = '';
+def.sendgrid.params = {};
 
 cfg.resolveLocalConfig(__dirname, (err, file) => {
   // eslint-disable-next-line global-require, import/no-dynamic-require

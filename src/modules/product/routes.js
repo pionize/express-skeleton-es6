@@ -1,17 +1,22 @@
 import express from 'express';
 import { ProductController } from './controller';
 import core from '../core';
-import { apiResponse } from '../core/middleware';
 
 const routes = express.Router();
 const { wrap } = core.utils;
 
 /**
- * GET /profile/:id*?
+ * GET /product/:id
  * View user profile
  */
-routes.get('/product/:id*?',
-  wrap(ProductController.getProduct),
-  apiResponse());
+routes.get('/products/:id',
+  wrap(ProductController.getProductById));
+
+/**
+ * GET /profile
+ * View user profile
+ */
+routes.get('/products',
+  wrap(ProductController.getAllProduct));
 
 export default routes;

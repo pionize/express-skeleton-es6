@@ -4,17 +4,16 @@ import bodyParser from 'body-parser';
 import compression from 'compression';
 import cors from 'cors';
 import helmet from 'helmet';
-import jsend from 'jsend';
 import statusMonitor from 'express-status-monitor';
 import responseTime from 'response-time';
+import Raven from 'raven';
 import config from '../config';
 import c from './constants';
 import core from './modules/core';
 import user from './modules/user';
 import product from './modules/product';
-import coupon from './modules/coupon';
+import address from './modules/address';
 import order from './modules/order';
-import payment from './modules/payment';
 
 const app = express();
 
@@ -23,9 +22,13 @@ process.on('unhandledRejection', (err) => {
   console.log('Unhandled Rejection:', err.stack);
 });
 
+const sentry = config.sentry.enable;
+if (sentry) {
+  Raven.config(config.sentry.dsn).install();
+}
+
 app.use(statusMonitor());
 app.use(responseTime());
-app.use(jsend.middleware);
 app.use(cors());
 app.use(helmet());
 app.use(compression());
@@ -50,13 +53,20 @@ app.set('case sensitive routing', true);
 // configure middleware
 app.use(core.middleware.requestLoggerMiddleware());
 app.use(core.middleware.requestUtilsMiddleware());
+app.use(core.middleware.apiResponse());
+
+// should be the first item before registering any routes
+// see: https://docs.sentry.io/clients/node/integrations/express/
+if (sentry) app.use(Raven.requestHandler());
 
 app.use(core.routes);
 app.use(user.routes);
 app.use(product.routes);
-app.use(coupon.routes);
+app.use(address.routes);
 app.use(order.routes);
-app.use(payment.routes);
+
+// should be coming first before any other error handler
+if (sentry) app.use(Raven.errorHandler());
 
 app.use((req, res, next) => {
   const err = new Error('Path Not Found');

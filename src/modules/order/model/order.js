@@ -1,15 +1,8 @@
-import Promise from 'bluebird';
-import _ from 'lodash';
+import { DataTypes } from 'sequelize';
 import core from '../../core';
-import productModule from '../../product';
-import lineItemModule from '../../line_item';
-import couponModule from '../../coupon';
-import { OrderLog } from './orderLog';
+import lineItemModule from '../../lineItem';
 
-const { Product } = productModule.model;
-const { LineItem, LineItemType } = lineItemModule.model;
-const { Coupon } = couponModule.model;
-const bookshelf = core.mysql.db;
+const { LineItem } = lineItemModule.model;
 
 export const OrderStatus = {
   CART: 'cart',
@@ -20,166 +13,76 @@ export const OrderStatus = {
   COMPLETE: 'complete',
 };
 
-class OrderModel extends bookshelf.Model {
-  // eslint-disable-next-line class-methods-use-this
-  get tableName() {
-    return 'order';
-  }
-  // eslint-disable-next-line class-methods-use-this
-  get idAttribute() {
-    return 'order_id';
-  }
-  // eslint-disable-next-line class-methods-use-this
-  get hasTimestamps() {
-    return true;
-  }
+const sequelize = core.sequelize.db;
 
-  async saveOrderLog() {
-    await OrderLog.create({
-      log: this.get('status'),
-      order_id: this.get('order_id'),
-    });
-  }
+export const Order = sequelize.define('order', {
+  order_id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  order_number: {
+    type: DataTypes.STRING,
+    defaultValue: '',
+    allowNull: false,
+  },
+  status: {
+    type: DataTypes.ENUM,
+    values: ['cart', 'canceled', 'checkout-complete', 'pending-shipment', 'shipped', 'complete'],
+    defaultValue: 'cart',
+    allowNull: false,
+  },
+  shipping_receipt: {
+    type: DataTypes.STRING,
+    defaultValue: '',
+    allowNull: false,
+  },
+  address_id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+  },
+  user_id: {
+    type: DataTypes.INTEGER.UNSIGNED,
+  },
+  created_at: {
+    type: DataTypes.DATE(),
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP()'),
+  },
+  updated_at: {
+    type: DataTypes.DATE(),
+    defaultValue: sequelize.literal('CURRENT_TIMESTAMP()'),
+  },
+}, {
+  timestamps: true,
+  underscored: true,
+});
 
-  async decreaseProductQuantity() {
-    if (this.get('status') === OrderStatus.CHECKOUT_COMPLETE) {
-      const lineItems = await LineItem.get({ order_id: this.get('order_id') });
-      const productUpdate = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const lineItemData of lineItems.models) {
-        if (lineItemData.get('entity_type') === LineItemType.PRODUCT) {
-          const productId = lineItemData.get('entity_id');
-          const product = await Product.getById(productId);
-          const newQuantity = product.get('quantity') - lineItemData.get('quantity');
-          productUpdate.push(Product.update(productId, { quantity: newQuantity }));
-        }
-      }
-      await Promise.all(productUpdate);
-    }
-  }
+Order.hasMany(LineItem, { foreignKey: 'line_item_id', as: 'line_item' });
 
-  async decreaseCouponQuantity() {
-    if (this.get('status') === OrderStatus.CHECKOUT_COMPLETE) {
-      const lineItems = await LineItem.get({ order_id: this.get('order_id') });
-      const couponUpdate = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const lineItemData of lineItems.models) {
-        if (lineItemData.get('entity_type') === LineItemType.COUPON) {
-          const couponId = lineItemData.get('entity_id');
-          const coupon = await Coupon.getById(couponId);
-          const newQuantity = coupon.get('quantity') - lineItemData.get('quantity');
-          couponUpdate.push(Coupon.update(couponId, { quantity: newQuantity }));
-        }
-      }
-      await Promise.all(couponUpdate);
-    }
-  }
+Order.getById = id => Order.findOne({ where: { order_id: id } });
 
-  async increaseProductQuantity() {
-    if (this.get('status') === OrderStatus.CANCELED) {
-      const lineItems = await LineItem.get({ order_id: this.get('order_id') });
-      const productUpdate = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const lineItemData of lineItems.models) {
-        if (lineItemData.get('entity_type') === LineItemType.PRODUCT) {
-          const productId = lineItemData.get('entity_id');
-          const product = await Product.getById(productId);
-          const newQuantity = product.get('quantity') + lineItemData.get('quantity');
-          productUpdate.push(Product.update(productId, { quantity: newQuantity }));
-        }
-      }
-      await Promise.all(productUpdate);
-    }
-  }
+Order.getAll = (condition = {}) => Order.findAll({
+  where: condition,
+  include: [
+    { model: LineItem, as: 'line_item' },
+  ],
+});
+// TODO: implement hook to decrease the product quantity on order create
+// TODO: implement hook to increase the product quantity on order cancel
 
-  async increaseCouponQuantity() {
-    if (this.get('status') === OrderStatus.CANCELED) {
-      const lineItems = await LineItem.get({ order_id: this.get('order_id') });
-      const couponUpdate = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const lineItemData of lineItems.models) {
-        if (lineItemData.get('entity_type') === LineItemType.COUPON) {
-          const couponId = lineItemData.get('entity_id');
-          const coupon = await Coupon.getById(couponId);
-          const newQuantity = coupon.get('quantity') + lineItemData.get('quantity');
-          couponUpdate.push(Coupon.update(couponId, { quantity: newQuantity }));
-        }
-      }
-      await Promise.all(couponUpdate);
-    }
-  }
+// eslint-disable-next-line
+Order.prototype.toJSON = function () {
+  const values = Object.assign({}, this.get());
 
-  // eslint-disable-next-line class-methods-use-this
-  async calculateTotalAmount(model, response, options) {
-    if (model) {
-      const lineItems = await LineItem.get({ order_id: model.get('order_id') });
-      let totalAmount = 0;
-      lineItems.each((lineItem) => {
-        totalAmount += lineItem.get('total_amount');
-      });
-      model.set('total_amount', totalAmount);
-    }
-  }
+  return values;
+};
 
-  initialize() {
-    this.on('saved', this.saveOrderLog);
-    this.on('saved', this.decreaseProductQuantity);
-    this.on('saved', this.decreaseCouponQuantity);
-    this.on('saved', this.increaseProductQuantity);
-    this.on('saved', this.increaseCouponQuantity);
-    this.on('fetched', this.calculateTotalAmount);
-  }
+Order.prototype.reloadData = async function () {
+  return this.reload({
+    plain: true,
+    include: [
+      { model: LineItem, as: 'line_item' },
+    ],
+  });
+};
 
-  /**
-   * Add relation to line item
-   */
-  lineItems() {
-    return this.hasMany(LineItem, 'order_id');
-  }
-
-  /**
-   * Add relation to order log
-   */
-  orderLogs() {
-    return this.hasMany(OrderLog, 'order_id');
-  }
-
-  /**
-   * Create a new order
-   * @param {Object} data
-   */
-  static async create(data) {
-    const order = new this(data);
-    return await order.save();
-  }
-
-  /**
-   * Update order
-   * @param {Integer} id
-   * @param {Object} data
-   */
-  static async update(id, data) {
-    data = _.omitBy(data, _.isNil);
-    const order = new this({ order_id: id });
-    return await order.save(data);
-  }
-
-  /**
-   * Get a order by id
-   * @param {Integer} id
-   */
-  static async getById(id) {
-    return await this.where({ order_id: id }).fetch();
-  }
-
-  /**
-   * Get a order by condition
-   * @param {Object} condition
-   */
-  static async get(condition = null) {
-    condition = _.omitBy(condition, _.isNil);
-    return await this.where(condition).fetchAll();
-  }
-}
-
-export const Order = OrderModel;
+export default { Order };

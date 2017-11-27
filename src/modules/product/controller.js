@@ -1,4 +1,5 @@
 import { Product } from './model';
+import { NotFoundError } from '../../../common/errors';
 
 export const ProductController = {};
 export default { ProductController };
@@ -6,24 +7,22 @@ export default { ProductController };
 /**
  * Get Product
  */
-ProductController.getProduct = async (req, res, next) => {
-  let product;
-
-  if (req.params.id) {
-    product = await Product.getById(req.params.id);
-  } else {
-    product = await Product.get({ status: 'active' });
-  }
+ProductController.getProductById = async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.getById(id);
 
   if (!product) {
-    const err = new Error('Invalid product');
-    return next(err);
+    const err = new NotFoundError('Product not found');
+    res.API.error(err);
   }
+  return res.API.success('Product data', product);
+};
 
-  req.resData = {
-    status: true,
-    message: 'Product Data',
-    data: product,
-  };
-  return next();
+/**
+ * Get Product
+ */
+ProductController.getAllProduct = async (req, res) => {
+  const products = await Product.getAll({ status: 'active' });
+
+  return res.API.success('Product data', products);
 };
