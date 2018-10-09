@@ -4,24 +4,6 @@
 #### Directory Structure
 Each module will be placed under `src/modules` directory. As a rule of thumb, split modules into small chunks. All public API should be exposed via `index.js`, even there is no limitation in NodeJS, it is considered best practice as it will prevent us to import something unknown and prevent tightly-coupled modules. Think the `index.js` as a gateway to exchange things.
 
-Example:
-
-```js
-// src/modules/users/index.js
-import * as model from './model';
-export model;
-```
-
-```js
-// src/modules/comments/product.js
-import { model } from '../users';
-
-class Comment {
-  static id: Int;
-  static person: model.Person;
-}
-```
-
 #### Configuration
 Base configuration file is located inside `/config` directory, the `index.js` will be overridden by the local configuration. Local configuration is excluded from the repository and depends on the `NODE_ENV` value. For example, in development environment, the local config file should be `development.js`.
 
